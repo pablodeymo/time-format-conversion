@@ -52,9 +52,9 @@ pub fn millis_to_string(millis: Millis) -> String {
     let mut count_minutes = millis / 60000;
     let mut count_seconds = millis / 1000;
     let count_millis = millis - (count_seconds * 1000);
-    count_seconds = count_seconds % 60;
-    count_minutes = count_minutes % 60;
-    let count_hours = millis / 3600000;
+    count_seconds %= 60;
+    count_minutes %= 60;
+    let count_hours = millis / 3_600_000;
     match count_hours {
         0 => format!("{}:{:02}.{:03}", count_minutes, count_seconds, count_millis),
         _ => format!("{}:{:02}:{:02}.{:03}", count_hours, count_minutes, count_seconds, count_millis),
