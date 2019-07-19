@@ -59,7 +59,7 @@ pub fn millis_to_string(millis: Millis) -> String {
         0 => format!("{}:{:02}.{:03}", count_minutes, count_seconds, count_millis),
         _ => format!("{}:{:02}:{:02}.{:03}", count_hours, count_minutes, count_seconds, count_millis),
     }
-    
+
 }
 
 pub fn millis_hora_minuto_to_string(millis: Millis) -> String {
@@ -73,7 +73,7 @@ pub fn convertir_tiempo_from_string_to_millis(input: &str) -> Option<Millis> {
     lazy_static! {
         static ref RE1: Regex = Regex::new(r"(\d+):(\d+):(\d{2})\.(\d{3})").unwrap();
         static ref RE2: Regex = Regex::new(r"(\d+):(\d{2})\.(\d{3})").unwrap();
-        static ref RE3: Regex = Regex::new(r"(\d{2})\.(\d{3})").unwrap();
+        static ref RE3: Regex = Regex::new(r"(\d{1,2})\.(\d{3})").unwrap();
     }
 
     let millis: u32;
