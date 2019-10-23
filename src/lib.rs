@@ -25,7 +25,7 @@ pub fn calcular_tiempo_en_millis_from_minuto_y_segundo(minutos: u32, segundos: u
 }
 
 pub fn calcular_tiempo_en_millis_from_minuto_y_segundo_str(minuto_segundo: &str) 
-            -> Result<Millis, Box<error::Error>> {
+            -> Result<Millis, Box<dyn error::Error>> {
     let v: Vec<&str> = minuto_segundo.split(':').collect();
     if v.len() != 2 {
         return Result::Err(Box::new(TimeUtilsError("Formato de hora no valido".into())))
@@ -37,7 +37,7 @@ pub fn calcular_tiempo_en_millis_from_minuto_y_segundo_str(minuto_segundo: &str)
 }
 
 pub fn calcular_tiempo_en_millis_from_hora_minuto(hour_minute: &str) 
-            -> Result<Millis, Box<error::Error>> {
+            -> Result<Millis, Box<dyn error::Error>> {
     let v: Vec<&str> = hour_minute.split(':').collect();
     if v.len() != 2 {
         return Result::Err(Box::new(TimeUtilsError("Format  of hour not valid".into())))
