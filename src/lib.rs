@@ -19,33 +19,31 @@ impl fmt::Display for TimeUtilsError {
     }
 }
 
-pub fn calcular_tiempo_en_millis_from_minuto_y_segundo(minutos: u32, segundos: u32) 
-            -> Millis {
-    minutos * 60_000 + segundos * 1000
+pub fn calcular_tiempo_en_millis_from_minuto_y_segundo(minutes: u32, seconds: u32) -> Millis {
+    minutes * 60_000 + seconds * 1000
 }
 
-pub fn calcular_tiempo_en_millis_from_minuto_y_segundo_str(minuto_segundo: &str) 
+pub fn calcular_tiempo_en_millis_from_minuto_y_segundo_str(minute_and_second: &str) 
             -> Result<Millis, Box<dyn error::Error>> {
-    let v: Vec<&str> = minuto_segundo.split(':').collect();
+    let v: Vec<&str> = minute_and_second.split(':').collect();
     if v.len() != 2 {
-        return Result::Err(Box::new(TimeUtilsError("Formato de hora no valido".into())))
+        return Result::Err(Box::new(TimeUtilsError("Invalid time format".into())))
     }
 
-    let minutos: u32 = FromStr::from_str(v[0])?;
-    let segundos: u32 = FromStr::from_str(v[1])?;
-    Ok(minutos * 60_000 + segundos * 1000)
+    let minutes: u32 = FromStr::from_str(v[0])?;
+    let seconds: u32 = FromStr::from_str(v[1])?;
+    Ok(minutes * 60_000 + seconds * 1000)
 }
 
-pub fn calcular_tiempo_en_millis_from_hora_minuto(hour_minute: &str) 
-            -> Result<Millis, Box<dyn error::Error>> {
+pub fn calcular_tiempo_en_millis_from_hora_minuto(hour_minute: &str) -> Result<Millis, Box<dyn error::Error>> {
     let v: Vec<&str> = hour_minute.split(':').collect();
     if v.len() != 2 {
-        return Result::Err(Box::new(TimeUtilsError("Format  of hour not valid".into())))
+        return Result::Err(Box::new(TimeUtilsError("Invalid time format".into())))
     }
 
     let hour: u32 = FromStr::from_str(v[0])?;
-    let minutos: u32 = FromStr::from_str(v[1])?;
-    Ok((hour * 3600 + minutos * 60) * 1000)
+    let minutes: u32 = FromStr::from_str(v[1])?;
+    Ok((hour * 3600 + minutes * 60) * 1000)
 }
 
 pub fn millis_to_string(millis: Millis) -> String {
@@ -64,7 +62,7 @@ pub fn millis_to_string(millis: Millis) -> String {
 
 pub fn millis_hora_minuto_to_string(millis: Millis) -> String {
     let count_minutes = millis / 60000;
-    let hour             = count_minutes / 60;
+    let hour          = count_minutes / 60;
     let minutes = count_minutes - (hour * 60);
     format!("{}:{:02}", hour, minutes)
 }
