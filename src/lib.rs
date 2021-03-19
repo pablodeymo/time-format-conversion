@@ -2,9 +2,9 @@
 extern crate lazy_static;
 extern crate regex;
 use regex::Regex;
-use std::str::FromStr;
 use std::error;
 use std::fmt;
+use std::str::FromStr;
 
 pub type Millis = u32;
 
@@ -23,11 +23,12 @@ pub fn calcular_tiempo_en_millis_from_minuto_y_segundo(minutes: u32, seconds: u3
     minutes * 60_000 + seconds * 1000
 }
 
-pub fn calcular_tiempo_en_millis_from_minuto_y_segundo_str(minute_and_second: &str) 
-            -> Result<Millis, Box<dyn error::Error>> {
+pub fn calcular_tiempo_en_millis_from_minuto_y_segundo_str(
+    minute_and_second: &str,
+) -> Result<Millis, Box<dyn error::Error>> {
     let v: Vec<&str> = minute_and_second.split(':').collect();
     if v.len() != 2 {
-        return Result::Err(Box::new(TimeUtilsError("Invalid time format".into())))
+        return Result::Err(Box::new(TimeUtilsError("Invalid time format".into())));
     }
 
     let minutes: u32 = FromStr::from_str(v[0])?;
@@ -35,10 +36,12 @@ pub fn calcular_tiempo_en_millis_from_minuto_y_segundo_str(minute_and_second: &s
     Ok(minutes * 60_000 + seconds * 1000)
 }
 
-pub fn calcular_tiempo_en_millis_from_hora_minuto(hour_minute: &str) -> Result<Millis, Box<dyn error::Error>> {
+pub fn calcular_tiempo_en_millis_from_hora_minuto(
+    hour_minute: &str,
+) -> Result<Millis, Box<dyn error::Error>> {
     let v: Vec<&str> = hour_minute.split(':').collect();
     if v.len() != 2 {
-        return Result::Err(Box::new(TimeUtilsError("Invalid time format".into())))
+        return Result::Err(Box::new(TimeUtilsError("Invalid time format".into())));
     }
 
     let hour: u32 = FromStr::from_str(v[0])?;
@@ -55,14 +58,16 @@ pub fn millis_to_string(millis: Millis) -> String {
     let count_hours = millis / 3_600_000;
     match count_hours {
         0 => format!("{}:{:02}.{:03}", count_minutes, count_seconds, count_millis),
-        _ => format!("{}:{:02}:{:02}.{:03}", count_hours, count_minutes, count_seconds, count_millis),
+        _ => format!(
+            "{}:{:02}:{:02}.{:03}",
+            count_hours, count_minutes, count_seconds, count_millis
+        ),
     }
-
 }
 
 pub fn millis_hora_minuto_to_string(millis: Millis) -> String {
     let count_minutes = millis / 60000;
-    let hour          = count_minutes / 60;
+    let hour = count_minutes / 60;
     let minutes = count_minutes - (hour * 60);
     format!("{}:{:02}", hour, minutes)
 }
@@ -78,22 +83,22 @@ pub fn convertir_tiempo_from_string_to_millis(input: &str) -> Option<Millis> {
     let seconds: u32;
     let mut minutes: u32 = 0;
     let mut hours: u32 = 0;
-    
+
     if let Some(caps) = RE1.captures(input) {
         millis = caps.get(4).unwrap().as_str().parse::<u32>().unwrap();
         seconds = caps.get(3).unwrap().as_str().parse::<u32>().unwrap();
         minutes = caps.get(2).unwrap().as_str().parse::<u32>().unwrap();
-        hours = caps.get(1).unwrap().as_str().parse::<u32>().unwrap();   
+        hours = caps.get(1).unwrap().as_str().parse::<u32>().unwrap();
     } else if let Some(caps) = RE2.captures(input) {
-            millis = caps.get(3).unwrap().as_str().parse::<u32>().unwrap();
-            seconds = caps.get(2).unwrap().as_str().parse::<u32>().unwrap();
-            minutes = caps.get(1).unwrap().as_str().parse::<u32>().unwrap();
-        } else if let Some(caps) = RE3.captures(input) {
-                millis = caps.get(2).unwrap().as_str().parse::<u32>().unwrap();
-                seconds = caps.get(1).unwrap().as_str().parse::<u32>().unwrap();
-            } else {
-                // Destructure failed. Change to the failure case.
-               return None;
-            };
+        millis = caps.get(3).unwrap().as_str().parse::<u32>().unwrap();
+        seconds = caps.get(2).unwrap().as_str().parse::<u32>().unwrap();
+        minutes = caps.get(1).unwrap().as_str().parse::<u32>().unwrap();
+    } else if let Some(caps) = RE3.captures(input) {
+        millis = caps.get(2).unwrap().as_str().parse::<u32>().unwrap();
+        seconds = caps.get(1).unwrap().as_str().parse::<u32>().unwrap();
+    } else {
+        // Destructure failed. Change to the failure case.
+        return None;
+    };
     Some(millis + seconds * 1000 + minutes * 60000 + hours * 3_600_000)
 }
